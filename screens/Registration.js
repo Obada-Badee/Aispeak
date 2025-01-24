@@ -31,11 +31,14 @@ import {
 } from '../components/styles';
 import { useState } from 'react';
 
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
+
 const { black, white, primary, secondary, lightGrey } = Colors;
 
-const Registration = () => {
+const Registration = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     return (
+        <KeyboardAvoidingWrapper>
         <StyledContainer>
             <StatusBar style="dark" />
             <InnerContainer>
@@ -49,6 +52,7 @@ const Registration = () => {
                     initialValues={{ username: '', email: '', passowrd: '' }}
                     onSubmit={(values) => {
                         console.log(values);
+                        navigation.navigate('Welcome');
                     }}>
                     {({ handleChange, handleBlur, handleSubmit, values }) => (
                         <StyledFormArea>
@@ -93,7 +97,7 @@ const Registration = () => {
                             <Line />
                             <ExtraView>
                                 <ExtraText>Already have an account? </ExtraText>
-                                <TextLink>
+                                < TextLink onPress={() => navigation.navigate('Login')}>
                                     <TextLinkContent>Login</TextLinkContent>
                                 </TextLink>
                             </ExtraView>
@@ -102,6 +106,7 @@ const Registration = () => {
                 </Formik>
             </InnerContainer>
         </StyledContainer>
+        </KeyboardAvoidingWrapper>
     );
 };
 

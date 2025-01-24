@@ -31,11 +31,15 @@ import {
 } from '../components/styles';
 import { useState } from 'react';
 
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
+
 const { black, white, primary, secondary, lightGrey } = Colors;
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
+
   return (
+    <KeyboardAvoidingWrapper>
     <StyledContainer>
       <StatusBar style="dark" />
       <InnerContainer>
@@ -48,7 +52,9 @@ const Login = () => {
         <Formik
           initialValues={{ email: '', passowrd: '' }}
           onSubmit={(values) => {
+
             console.log(values);
+            navigation.navigate('Welcome');
           }}>
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <StyledFormArea>
@@ -83,15 +89,16 @@ const Login = () => {
               <Line />
               <ExtraView>
                 <ExtraText>Don't have an account already? </ExtraText>
-                <TextLink>
+                <TextLink onPress={() => navigation.navigate('Register')}>
                   <TextLinkContent>Signup</TextLinkContent>
                 </TextLink>
-              </ExtraView>  
+              </ExtraView>
             </StyledFormArea>
           )}
         </Formik>
       </InnerContainer>
     </StyledContainer>
+    </KeyboardAvoidingWrapper>
   );
 };
 
@@ -103,9 +110,9 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
       </LeftIcon>
       <StyledInputLabel>{label}</StyledInputLabel>
       <StyledTextInput {...props} />
-      { isPassword && (
-        <RightIcon onPress={() => setHidePassword(!hidePassword)}>  
-          <Ionicons  name={hidePassword ? 'eye-off-outline' : 'eye-outline'} size={30} color={primary} />
+      {isPassword && (
+        <RightIcon onPress={() => setHidePassword(!hidePassword)}>
+          <Ionicons name={hidePassword ? 'eye-off-outline' : 'eye-outline'} size={30} color={primary} />
         </RightIcon>
       )
 
