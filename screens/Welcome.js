@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as Animatable from 'react-native-animatable';
+import { CommonActions } from '@react-navigation/native';
 
 import {
     InnerContainer,
@@ -13,7 +14,16 @@ import {
     Line,
     WelcomeContainer,
 } from '../components/styles';
-const Welcome = ({ navigation }) => {
+
+const Welcome = ({ route, navigation }) => {
+    const { username, email } = route.params;
+    const handleLogout = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+            }));
+    };
     return (
         <>
 
@@ -23,8 +33,8 @@ const Welcome = ({ navigation }) => {
 
                 <WelcomeContainer>
                     <PageTitle welcome={true}>Welcome to Aispeak!</PageTitle>
-                    <SubTitle welcome={true}>John Doe</SubTitle>
-                    <SubTitle welcome={true}>John.Doe@gmail.com</SubTitle>
+                    <SubTitle welcome={true}>{username}</SubTitle>
+                    <SubTitle welcome={true}>{email}</SubTitle>
 
                     <Animatable.Image
                         animation="bounceIn"
@@ -37,9 +47,7 @@ const Welcome = ({ navigation }) => {
                     />
                     <StyledFormArea>
                         <Line />
-                        <StyledButton onPress={() => {
-                            navigation.navigate('Login');
-                        }}>
+                        <StyledButton onPress={handleLogout}>
                             <ButtonText>Logout</ButtonText>
                         </StyledButton>
                     </StyledFormArea>

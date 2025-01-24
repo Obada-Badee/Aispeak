@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import * as Yup from 'yup';
 
 //formik
 import { Formik, Field, Form } from 'formik';
@@ -35,8 +36,28 @@ import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
 const { black, white, primary, secondary, lightGrey } = Colors;
 
-const Registration = ({ navigation }) => {
+const registerValidationSchema = Yup.object().shape({
+    username: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    email: Yup.string().email('Please enter a valid email').required('Required'),
+    password: Yup.string()
+        .min(6, ({ min }) => `Password must be at least ${min} characters`)
+        .required('Required'),
+});
+
+const Registration = ({ navigation, users, setUsers }) => {
     const [hidePassword, setHidePassword] = useState(true);
+
+    const handleRegistration = (values) => {
+        const userExists = users.some(user => user.email === values.email || user.username === values.username);
+        if (!userExists) {
+            setUsers([...users, values]);
+            console.log(values);
+            navigation.navigate('Welcome', { username: values.username, email: values.email });
+        } else {
+            alert('User already exists');
+        }
+    }
+
     return (
         <KeyboardAvoidingWrapper>
         <StyledContainer>
@@ -49,11 +70,11 @@ const Registration = ({ navigation }) => {
                 <PageTitle>Aispeak</PageTitle>
                 <SubTitle>Account Registration</SubTitle>
                 <Formik
-                    initialValues={{ username: '', email: '', passowrd: '' }}
+                    initialValues={{ username: '', email: '', password: '' }}
                     onSubmit={(values) => {
-                        console.log(values);
-                        navigation.navigate('Welcome');
-                    }}>
+                        handleRegistration(values);
+                    }}
+                    validationSchema={registerValidationSchema}>
                     {({ handleChange, handleBlur, handleSubmit, values }) => (
                         <StyledFormArea>
                             <MyTextInput

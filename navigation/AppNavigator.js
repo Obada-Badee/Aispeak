@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
-const AppNavigator = () => {
+const AppNavigator = ({ users, setUsers }) => {
   return (
     <NavigationContainer>
     <Stack.Navigator 
@@ -23,9 +23,14 @@ const AppNavigator = () => {
         },
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login">
+        {(props) => <LoginScreen {...props} users={users} setUsers={setUsers} />}
+      </Stack.Screen>
+
+      <Stack.Screen name="Register">
+        {(props) => <RegisterScreen {...props} users={users} setUsers={setUsers} />}
+      </Stack.Screen>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
     </NavigationContainer>
   );

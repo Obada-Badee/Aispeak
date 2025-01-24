@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import * as Yup from 'yup';
 
 //formik
 import { Formik, Field, Form } from 'formik';
@@ -35,8 +36,31 @@ import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
 const { black, white, primary, secondary, lightGrey } = Colors;
 
-const Login = ({ navigation }) => {
+const loginValidationSchema = Yup.object().shape({
+  usernameOrEmail: Yup.string()
+    .required('Username or Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
+
+const Login = ({ navigation, users }) => {
   const [hidePassword, setHidePassword] = useState(true);
+
+  const handleLogin = (values) => { 
+    const userExists = users.find(
+      (user) =>
+        (user.username === values.usernameOrEmail || user.email === values.usernameOrEmail) &&
+        user.password === values.password
+    );
+  
+    if (userExists) {
+      console.log(userExists);
+      navigation.navigate('Welcome', { username: userExists.username, email: userExists.email });
+    } else {
+      alert('Incorrect login credentials');
+    }
+  };
 
   return (
     <KeyboardAvoidingWrapper>
@@ -50,12 +74,12 @@ const Login = ({ navigation }) => {
         <PageTitle>Aispeak</PageTitle>
         <SubTitle>Account Login</SubTitle>
         <Formik
-          initialValues={{ email: '', passowrd: '' }}
+          initialValues={{ usernameOrEmail: '', password: '' }}
           onSubmit={(values) => {
-
-            console.log(values);
-            navigation.navigate('Welcome');
-          }}>
+            handleLogin(values);
+          }}
+          validationSchema={loginValidationSchema}
+          >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <StyledFormArea>
               <MyTextInput
@@ -63,9 +87,9 @@ const Login = ({ navigation }) => {
                 icon="mail"
                 placeholder="example@gmail.com"
                 placeholderTextColor={lightGrey}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
+                onChangeText={handleChange('usernameOrEmail')}
+                onBlur={handleBlur('usernameOrEmail')}
+                value={values.usernameOrEmail}
                 keyboardType="email-address"
               />
 
