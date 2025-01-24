@@ -10,10 +10,10 @@ A simple React Native app.
 ## Screenshots
 
 ### Login Screen
-![Login Screen](https://i.imgur.com/Login.png)
+![Login Screen](https://github.com/Obada-Badee/Aispeak/blob/master/screenshots/Login.png)
 
 ### Registration Screen
-![Registration Screen](https://i.imgur.com/Registration.png)
+![Registration Screen](https://github.com/Obada-Badee/Aispeak/blob/master/screenshots/Registration.png)
 
 ### Welcome Screen
-![Welcome Screen](https://i.imgur.com/Welcome.png)
+![Welcome Screen](https://github.com/Obada-Badee/Aispeak/blob/master/screenshots/welcome.png)
